@@ -838,12 +838,12 @@ if nav_selection == "Dashboard & Analysis":
                 <span class="sample-type-label">Sample Comment</span>
             </div>
             <div class="sample-quote-text">
-                "Just launched our new product! The support from the community is incredible! 🚀"
+                "Just launched our new product! The support from the community is incredible!"
             </div>
         </div>
         """, unsafe_allow_html=True)
         if st.button("Load Comment 1 →", key="load_ex1", use_container_width=True):
-            st.session_state['tweet_text_input'] = "Just launched our new product! The support from the community is incredible! 🚀"
+            st.session_state['tweet_text_input'] = "Just launched our new product! The support from the community is incredible!"
             st.rerun()
             
         # Example 2: Negative
@@ -909,7 +909,7 @@ if nav_selection == "Dashboard & Analysis":
         """, unsafe_allow_html=True)
         
         if 'tweet_text_input' not in st.session_state:
-            st.session_state['tweet_text_input'] = "Just launched our new product! The support from the community is incredible! 🚀"
+            st.session_state['tweet_text_input'] = "Just launched our new product! The support from the community is incredible!"
             
         tweet_input_val = st.text_area(
             "Tweet Input",
