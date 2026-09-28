@@ -1,0 +1,37 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Environments & Dependencies
+.Python
+env/
+venv/
+.venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Secrets & Local Configuration
+.env
+.env.local
+.streamlit/secrets.toml
+secrets/
+credentials/
+*.pem
+*.key
+
+# Jupyter Notebook Checkpoints
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/*
+
+# IDE & Editor Temporary Files
+.kilo/
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs & Runtime
+*.log
