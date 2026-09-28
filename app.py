@@ -14,7 +14,6 @@ from nltk.sentiment.vader import SentimentIntensityAnalyzer
 # ---------------------------------------------------------
 st.set_page_config(
     page_title="Twitter Sentiment Analysis — AI Intelligence",
-    page_icon="🐦",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -433,8 +432,9 @@ st.markdown("""
         box-shadow: 0 0 0 3px rgba(197, 160, 89, 0.22) !important;
     }
     
-    /* High-Contrast Button Styling */
-    div.stButton > button {
+    /* Primary Action CTA Buttons */
+    div.stButton > button[kind="primary"],
+    button[kind="primary"] {
         background: linear-gradient(135deg, #D4AF37 0%, #C5A059 50%, #B89047 100%) !important;
         color: #181614 !important;
         -webkit-text-fill-color: #181614 !important;
@@ -447,7 +447,8 @@ st.markdown("""
         transition: all 0.2s ease !important;
     }
     
-    div.stButton > button:hover {
+    div.stButton > button[kind="primary"]:hover,
+    button[kind="primary"]:hover {
         background: linear-gradient(135deg, #E2C358 0%, #D4AF37 100%) !important;
         transform: translateY(-1px) !important;
         box-shadow: 0 6px 18px rgba(197, 160, 89, 0.45) !important;
@@ -455,25 +456,32 @@ st.markdown("""
         -webkit-text-fill-color: #181614 !important;
     }
     
-    /* Example Tweet Preset Buttons */
+    /* Example Tweet Preset Buttons - Clean White/Ivory Luxury Card Styling */
+    div.stButton > button[key*="ex"],
     div[data-testid="stVerticalBlock"] div.stButton > button[key*="ex"] {
-        background: #FAF8F4 !important;
+        background: #FFFFFF !important;
         color: #181614 !important;
         -webkit-text-fill-color: #181614 !important;
-        border: 1.5px solid #E4DED2 !important;
+        border: 1.5px solid #E6E0D4 !important;
         border-radius: 12px !important;
         font-weight: 600 !important;
         font-size: 0.88rem !important;
         text-align: left !important;
-        padding: 0.8rem 1rem !important;
-        box-shadow: 0 1px 4px rgba(0,0,0,0.02) !important;
+        padding: 0.85rem 1.1rem !important;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.02) !important;
+        line-height: 1.45 !important;
+        white-space: normal !important;
+        height: auto !important;
     }
     
+    div.stButton > button[key*="ex"]:hover,
     div[data-testid="stVerticalBlock"] div.stButton > button[key*="ex"]:hover {
-        background: #F3EBDC !important;
+        background: #FAF6ED !important;
         border-color: #C5A059 !important;
         color: #181614 !important;
         -webkit-text-fill-color: #181614 !important;
+        transform: translateY(-1px) !important;
+        box-shadow: 0 4px 12px rgba(197, 160, 89, 0.15) !important;
     }
     
     /* Secondary Action Button (Clear Text) */
@@ -540,7 +548,6 @@ custom_model, loaded_model_path = load_custom_model()
 
 # Secure Twitter/X API Credential Loader (from Secrets / Env)
 def get_twitter_api_config():
-    # 1. Check Streamlit secrets
     try:
         if hasattr(st, "secrets") and "TWITTER_CONSUMER_KEY" in st.secrets:
             if st.secrets["TWITTER_CONSUMER_KEY"].strip():
@@ -551,7 +558,6 @@ def get_twitter_api_config():
     except Exception:
         pass
     
-    # 2. Check Environment Variables
     env_key = os.getenv("TWITTER_CONSUMER_KEY", "")
     if env_key and env_key.strip() and not env_key.startswith("your_"):
         return {
@@ -713,7 +719,7 @@ st.markdown(f"""
     </div>
     <div class="nav-meta-tags">
         <span class="nav-pill">NLP • Social Media • AI</span>
-        <span class="nav-pill" style="color: #065F46 !important; background: #DCFCE7; border-color: #86EFAC;">● Live Ready</span>
+        <span class="nav-pill" style="color: #065F46 !important; background: #DCFCE7; border-color: #86EFAC;">System Ready</span>
         <div class="nav-avatar">AI</div>
     </div>
 </div>
@@ -732,10 +738,10 @@ if nav_selection == "Dashboard & Analysis":
             Analyze public opinion from tweets using Natural Language Processing and Machine Learning. Get instant insights, visualize trends, and understand the sentiment behind social media conversations.
         </p>
         <div class="hero-chips-row">
-            <span class="hero-chip">⚡ Real-time Analysis</span>
-            <span class="hero-chip">📂 Batch Processing</span>
-            <span class="hero-chip">📥 CSV Export</span>
-            <span class="hero-chip">📊 Interactive Visualizations</span>
+            <span class="hero-chip">Real-time Analysis</span>
+            <span class="hero-chip">Batch Processing</span>
+            <span class="hero-chip">CSV Export</span>
+            <span class="hero-chip">Interactive Visualizations</span>
         </div>
     </div>
     """, unsafe_allow_html=True)
@@ -746,37 +752,37 @@ if nav_selection == "Dashboard & Analysis":
     with col_ex:
         st.markdown("""
         <div class="lux-card">
-            <div class="lux-card-title">💡 Example Tweets</div>
+            <div class="lux-card-title">Example Tweets</div>
             <div class="lux-card-desc">Select any preset tweet to evaluate sentiment instantly:</div>
         </div>
         """, unsafe_allow_html=True)
         
         # Example 1: Positive
-        if st.button("🟢 'Just launched our new product! The support is incredible! 🚀'", key="ex1", use_container_width=True):
-            st.session_state['tweet_text_input'] = "Just launched our new product! The support is incredible and the team is so proud! 🚀"
+        if st.button("'Just launched our new product! The support from the community is incredible!'", key="ex1", use_container_width=True):
+            st.session_state['tweet_text_input'] = "Just launched our new product! The support from the community is incredible and the team is so proud!"
             
         # Example 2: Negative
-        if st.button("🔴 'Terrible service. Flight was delayed 5 hours with zero updates.'", key="ex2", use_container_width=True):
-            st.session_state['tweet_text_input'] = "Terrible service. Flight was delayed 5 hours with zero updates and lost luggage! 😡"
+        if st.button("'Terrible service. Flight was delayed 5 hours with zero updates.'", key="ex2", use_container_width=True):
+            st.session_state['tweet_text_input'] = "Terrible service. Flight was delayed 5 hours with zero updates and lost luggage."
             
         # Example 3: Neutral
-        if st.button("🟡 'Heading to the office, having my usual morning coffee.'", key="ex3", use_container_width=True):
+        if st.button("'Heading to the office, having my usual morning coffee.'", key="ex3", use_container_width=True):
             st.session_state['tweet_text_input'] = "Heading to the office, having my usual morning coffee."
             
         # Example 4: Mixed
-        if st.button("🟣 'The camera is fantastic, but battery life is quite disappointing.'", key="ex4", use_container_width=True):
+        if st.button("'The camera is fantastic, but battery life is quite disappointing.'", key="ex4", use_container_width=True):
             st.session_state['tweet_text_input'] = "The camera hardware is fantastic, but the battery life is quite disappointing."
 
     with col_work:
         st.markdown("""
         <div class="lux-card">
-            <div class="lux-card-title">✍️ Analyze a Tweet</div>
+            <div class="lux-card-title">Analyze a Tweet</div>
             <div class="lux-card-desc">Enter tweet text or a Twitter/X URL to get instant sentiment classification using our NLP model.</div>
         </div>
         """, unsafe_allow_html=True)
         
         if 'tweet_text_input' not in st.session_state:
-            st.session_state['tweet_text_input'] = "Just got accepted for the new AI fellowship! So thrilled and grateful for this amazing opportunity! 🎉"
+            st.session_state['tweet_text_input'] = "Just got accepted for the new AI fellowship! So thrilled and grateful for this amazing opportunity."
             
         tweet_input_val = st.text_area(
             "Tweet Input",
@@ -789,7 +795,7 @@ if nav_selection == "Dashboard & Analysis":
         # Action bar
         c_chars, c_clear, c_btn = st.columns([1.5, 1, 2])
         with c_chars:
-            st.caption(f"📏 **{len(tweet_input_val)}** / 500 characters")
+            st.caption(f"{len(tweet_input_val)} / 500 characters")
         with c_clear:
             if st.button("Clear Text", key="clear_btn", use_container_width=True):
                 st.session_state['tweet_text_input'] = ""
@@ -804,7 +810,6 @@ if nav_selection == "Dashboard & Analysis":
         
         res_class = "result-positive" if label == "Positive" else ("result-negative" if label == "Negative" else "result-neutral")
         badge_class = "badge-positive" if label == "Positive" else ("badge-negative" if label == "Negative" else "badge-neutral")
-        badge_icon = "🟢 😊" if label == "Positive" else ("🔴 😡" if label == "Negative" else "🟡 😐")
         accent_color = "#059669" if label == "Positive" else ("#DC2626" if label == "Negative" else "#D97706")
         
         st.markdown("---")
@@ -821,7 +826,7 @@ if nav_selection == "Dashboard & Analysis":
             
         with r_act_col:
             st.download_button(
-                "📥 Download Summary Report",
+                "Download Summary Report",
                 data=f"Tweet: {tweet_input_val}\nSentiment: {label}\nCompound Score: {result['compound']}\nConfidence: {result['confidence']}%\nPositive Polarity: {result['pos']*100}%\nNegative Polarity: {result['neg']*100}%\nNeutral Polarity: {result['neu']*100}%\n",
                 file_name="tweet_sentiment_report.txt",
                 mime="text/plain",
@@ -834,7 +839,7 @@ if nav_selection == "Dashboard & Analysis":
             <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
                 <div>
                     <span class="sentiment-badge {badge_class}">{label} SENTIMENT</span>
-                    <h2 style="margin: 0; font-size: 1.9rem; font-weight: 900; color: #181614 !important;">{badge_icon} Predicted: {label}</h2>
+                    <h2 style="margin: 0; font-size: 1.9rem; font-weight: 900; color: #181614 !important;">Predicted: {label}</h2>
                     <div style="font-size: 0.9rem; color: #44403C !important; margin-top: 4px; font-weight: 500;">Evaluated via Social-Media Calibrated NLP & Feature Weighting</div>
                 </div>
                 <div style="text-align: right;">
@@ -885,7 +890,7 @@ if nav_selection == "Dashboard & Analysis":
         st.markdown("""
         <div class="lux-card" style="padding: 1.4rem;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem;">
-                <div style="font-weight: 800; font-size: 1rem; color: #181614 !important;">📊 Polarity Distribution Breakdown</div>
+                <div style="font-weight: 800; font-size: 1rem; color: #181614 !important;">Polarity Distribution Breakdown</div>
                 <div style="font-size: 0.82rem; color: #625D55 !important; font-weight: 600;">Sum of constituent polarity weights = 100%</div>
             </div>
         """, unsafe_allow_html=True)
@@ -901,15 +906,15 @@ if nav_selection == "Dashboard & Analysis":
             <div style="width: {u_pct}%; background: #F59E0B;" title="Neutral: {u_pct}%"></div>
         </div>
         <div style="display: flex; gap: 20px; font-size: 0.85rem; font-weight: 700;">
-            <span style="color: #065F46 !important;">🟢 Positive: {result['pos']*100:.1f}%</span>
-            <span style="color: #991B1B !important;">🔴 Negative: {result['neg']*100:.1f}%</span>
-            <span style="color: #92400E !important;">🟡 Neutral: {result['neu']*100:.1f}%</span>
+            <span style="color: #065F46 !important;">Positive: {result['pos']*100:.1f}%</span>
+            <span style="color: #991B1B !important;">Negative: {result['neg']*100:.1f}%</span>
+            <span style="color: #92400E !important;">Neutral: {result['neu']*100:.1f}%</span>
         </div>
         </div>
         """, unsafe_allow_html=True)
         
         # NLP Token & Stemming Diagnostic
-        with st.expander("🔬 View NLP Preprocessing & Token Breakdown", expanded=False):
+        with st.expander("View NLP Preprocessing & Token Breakdown", expanded=False):
             st.markdown(f"**Original Input Tweet:** `{tweet_input_val}`")
             st.markdown(f"**Cleaned & Stemmed Representation (Porter Stemmer):** `{result['cleaned']}`")
             st.caption("Preprocessing Pipeline: Unicode normalization → Regex URL & handle stripping → Punctuation removal → Lowercasing → Stopwords elimination → Porter root word stemming.")
@@ -937,7 +942,7 @@ if nav_selection == "Dashboard & Analysis":
         <div class="about-model-card">
             <div class="about-card-tag">ALGORITHM</div>
             <div class="about-card-title">Logistic Regression / VADER</div>
-            <div class="about-card-body">High-performance classification with specialized negation, punctuation, and emoji sensitivity.</div>
+            <div class="about-card-body">High-performance classification with specialized negation, punctuation, and intensity sensitivity.</div>
         </div>
         """, unsafe_allow_html=True)
     with am3:
@@ -954,9 +959,9 @@ if nav_selection == "Dashboard & Analysis":
             <div class="about-card-tag">CLASSES</div>
             <div class="about-card-title">3 Polarity States</div>
             <div class="about-card-body">
-                <span style="color: #059669; font-weight: 800;">● Positive</span><br>
-                <span style="color: #DC2626; font-weight: 800;">● Negative</span><br>
-                <span style="color: #D97706; font-weight: 800;">● Neutral</span>
+                <span style="color: #059669; font-weight: 800;">Positive</span><br>
+                <span style="color: #DC2626; font-weight: 800;">Negative</span><br>
+                <span style="color: #D97706; font-weight: 800;">Neutral</span>
             </div>
         </div>
         """, unsafe_allow_html=True)
@@ -977,7 +982,7 @@ elif nav_selection == "Batch Processing & CSV":
     with b_col1:
         st.markdown("""
         <div class="lux-card">
-            <div class="lux-card-title">📂 Option A: Upload CSV File</div>
+            <div class="lux-card-title">Option A: Upload CSV File</div>
             <div class="lux-card-desc">File should contain a column named <code>text</code>, <code>tweet</code>, or <code>content</code>.</div>
         </div>
         """, unsafe_allow_html=True)
@@ -986,15 +991,15 @@ elif nav_selection == "Batch Processing & CSV":
     with b_col2:
         st.markdown("""
         <div class="lux-card">
-            <div class="lux-card-title">📝 Option B: Paste Multiple Tweets</div>
+            <div class="lux-card-title">Option B: Paste Multiple Tweets</div>
             <div class="lux-card-desc">Enter one tweet per line for instant batch classification:</div>
         </div>
         """, unsafe_allow_html=True)
-        sample_batch_text = """I absolutely love this new update, works like magic! 🚀
-Terrible customer support, waited on call for 2 hours with no solution. 😡
+        sample_batch_text = """I absolutely love this new update, works like magic!
+Terrible customer support, waited on call for 2 hours with no solution.
 The weather is 24 degrees today in London.
 What an awful experience with the flight delay.
-Super excited for the conference keynote tomorrow! 🎉"""
+Super excited for the conference keynote tomorrow!"""
         raw_pasted_text = st.text_area("Paste Tweets", value=sample_batch_text, height=130, label_visibility="collapsed")
         
     batch_df = None
@@ -1014,7 +1019,7 @@ Super excited for the conference keynote tomorrow! 🎉"""
         except Exception as e:
             st.error(f"Error reading CSV: {e}")
             
-    elif st.button("⚡ Process Pasted Batch", type="primary", use_container_width=True):
+    elif st.button("Process Pasted Batch", type="primary", use_container_width=True):
         lines = [line.strip() for line in raw_pasted_text.strip().split('\n') if line.strip()]
         if lines:
             batch_df = pd.DataFrame({'Original Tweet': lines})
@@ -1041,7 +1046,7 @@ Super excited for the conference keynote tomorrow! 🎉"""
             neu_n = sum(batch_df['Predicted Sentiment'] == 'Neutral')
             
             st.markdown("---")
-            st.markdown("<h3 style='font-size: 1.3rem; font-weight: 800; color: #181614 !important;'>📊 Batch Analysis Summary</h3>", unsafe_allow_html=True)
+            st.markdown("<h3 style='font-size: 1.3rem; font-weight: 800; color: #181614 !important;'>Batch Analysis Summary</h3>", unsafe_allow_html=True)
             
             sum1, sum2, sum3, sum4 = st.columns(4)
             with sum1:
@@ -1054,21 +1059,21 @@ Super excited for the conference keynote tomorrow! 🎉"""
             with sum2:
                 st.markdown(f"""
                 <div class="metric-grid-card">
-                    <div class="metric-label">Positive 🟢</div>
+                    <div class="metric-label">Positive</div>
                     <div class="metric-num" style="color: #059669 !important;">{pos_n} <span style="font-size: 0.9rem; color: #625D55 !important;">({pos_n/total_n*100:.1f}%)</span></div>
                 </div>
                 """, unsafe_allow_html=True)
             with sum3:
                 st.markdown(f"""
                 <div class="metric-grid-card">
-                    <div class="metric-label">Negative 🔴</div>
+                    <div class="metric-label">Negative</div>
                     <div class="metric-num" style="color: #DC2626 !important;">{neg_n} <span style="font-size: 0.9rem; color: #625D55 !important;">({neg_n/total_n*100:.1f}%)</span></div>
                 </div>
                 """, unsafe_allow_html=True)
             with sum4:
                 st.markdown(f"""
                 <div class="metric-grid-card">
-                    <div class="metric-label">Neutral 🟡</div>
+                    <div class="metric-label">Neutral</div>
                     <div class="metric-num" style="color: #D97706 !important;">{neu_n} <span style="font-size: 0.9rem; color: #625D55 !important;">({neu_n/total_n*100:.1f}%)</span></div>
                 </div>
                 """, unsafe_allow_html=True)
@@ -1082,12 +1087,12 @@ Super excited for the conference keynote tomorrow! 🎉"""
             
             st.bar_chart(chart_data, color="#C5A059")
             
-            st.markdown("##### 📋 Processed Tweets Table")
+            st.markdown("##### Processed Tweets Table")
             st.dataframe(batch_df, use_container_width=True)
             
             csv_output = batch_df.to_csv(index=False).encode('utf-8')
             st.download_button(
-                "📥 Download Processed CSV Results",
+                "Download Processed CSV Results",
                 data=csv_output,
                 file_name="sentiment_batch_results.csv",
                 mime="text/csv",
@@ -1107,19 +1112,19 @@ elif nav_selection == "Live Tweet Search (URL)":
     
     st.markdown("""
     <div class="lux-card">
-        <div class="lux-card-title">🔗 Enter Tweet URL or ID</div>
+        <div class="lux-card-title">Enter Tweet URL or ID</div>
         <div class="lux-card-desc">Example: <code>https://x.com/username/status/1467810369</code></div>
     </div>
     """, unsafe_allow_html=True)
     
-    url_input = st.text_input("Twitter Link", placeholder="https://x.com/elonmusk/status/1700000000000000", label_visibility="collapsed")
+    url_input = st.text_input("Twitter Link", placeholder="https://x.com/username/status/1700000000000000", label_visibility="collapsed")
     
     if st.button("Fetch & Analyze Live Tweet →", type="primary"):
         if url_input.strip():
             tweet_id = url_input.strip().split('/')[-1]
             st.info(f"Resolved Tweet ID: `{tweet_id}`")
             
-            sample_fetched = f"Excited to announce the new milestone! Hard work pays off and looking forward to next year! #Innovation"
+            sample_fetched = f"Excited to announce the new milestone! Hard work pays off and looking forward to next year!"
             st.markdown(f"**Fetched Tweet Text:** *\"{sample_fetched}\"*")
             
             res = evaluate_sentiment(sample_fetched)
@@ -1142,7 +1147,7 @@ elif nav_selection == "Analytics & Visualizations":
     with a_col1:
         st.markdown("""
         <div class="lux-card">
-            <div class="lux-card-title">📊 Sentiment Distribution Spectrum</div>
+            <div class="lux-card-title">Sentiment Distribution Spectrum</div>
             <div class="lux-card-desc">Aggregated polarity breakdown across 10,000 sampled social interactions:</div>
         </div>
         """, unsafe_allow_html=True)
@@ -1155,7 +1160,7 @@ elif nav_selection == "Analytics & Visualizations":
     with a_col2:
         st.markdown("""
         <div class="lux-card">
-            <div class="lux-card-title">🎯 Compound Polarity Curve</div>
+            <div class="lux-card-title">Compound Polarity Curve</div>
             <div class="lux-card-desc">Compound score normalized frequency distribution:</div>
         </div>
         """, unsafe_allow_html=True)
@@ -1207,7 +1212,7 @@ elif nav_selection == "NLP Pipeline Architecture":
             </div>
         </div>
         <p style="font-size: 0.92rem; color: #44403C !important; line-height: 1.6; font-weight: 500;">
-            Our hybrid natural language processing engine combines rule-based heuristic sentiment modeling with corpus-trained term frequency statistics, delivering exceptional accuracy on informal tweets, slang, acronyms, and emoji-heavy text.
+            Our hybrid natural language processing engine combines rule-based heuristic sentiment modeling with corpus-trained term frequency statistics, delivering exceptional accuracy on informal tweets, slang, acronyms, and social text.
         </p>
     </div>
     """, unsafe_allow_html=True)
@@ -1266,7 +1271,7 @@ elif nav_selection == "Model & API Settings":
     
     st.markdown("""
     <div class="lux-card">
-        <div class="lux-card-title">🛡️ Security & Credential Architecture</div>
+        <div class="lux-card-title">Security & Credential Architecture</div>
         <div class="lux-card-desc">
             To ensure zero exposure of private API credentials in public environments, this application adheres to production-grade security standards.
         </div>
@@ -1303,7 +1308,7 @@ elif nav_selection == "Model & API Settings":
     st.markdown("<br>", unsafe_allow_html=True)
     st.markdown("""
     <div class="lux-card">
-        <h4 style="font-weight: 800; margin-bottom: 0.6rem; color: #181614 !important;">⚙️ How to Configure API Keys for Local Development / Deployment</h4>
+        <h4 style="font-weight: 800; margin-bottom: 0.6rem; color: #181614 !important;">How to Configure API Keys for Local Development / Deployment</h4>
         <p style="color: #44403C !important; font-size: 0.9rem; line-height: 1.6;">
             1. <strong>Streamlit Secrets (Recommended):</strong> Add credentials to <code>.streamlit/secrets.toml</code>:<br>
             <code>TWITTER_CONSUMER_KEY = "your_key"</code><br>
